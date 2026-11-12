@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101c31">
+<title>証明ビルダー｜選んで完成する数学の証明</title>
+<style>
+:root{--navy:#101c31;--navy2:#182942;--ink:#1a2840;--muted:#68778d;--paper:#f3f6fb;--white:#fff;--line:#dee6f1;--blue:#3569e7;--blueLight:#eaf0ff;--mint:#13ad83;--mintLight:#e1f8f0;--amber:#bb7110;--amberLight:#fff3d8;--red:#d55364;--redLight:#fff0f2;--shadow:0 10px 32px rgba(25,45,75,.08)}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;color:var(--ink);background:var(--paper)}
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid #77a6fa;outline-offset:3px}
+.app{min-height:100dvh;display:flex;flex-direction:column}
+.hero{background:linear-gradient(119deg,#101b2f 0%,#203b60 78%,#25416b 100%);color:#fff;padding:12px clamp(16px,3vw,38px);display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:79px}
+.logo{display:flex;align-items:center;gap:12px;min-width:0}
+.logoMark{width:43px;height:43px;flex:0 0 auto;border:1px solid #52709c;background:#253b59;border-radius:13px;display:grid;place-items:center;color:#cde1ff;font-weight:800;font-size:21px}
+h1{font-size:clamp(17px,1.8vw,23px);letter-spacing:.045em;margin:0;line-height:1.3}
+.subtitle{font-size:11.5px;color:#bfcce1;margin:5px 0 0}
+.hRight{display:flex;align-items:center;gap:12px}
+.record{font-weight:700;color:#d8e8ff;font-size:13px;white-space:nowrap}
+.ghost{background:#ffffff11;color:#e6ecf9;border:1px solid #ffffff43;padding:9px 13px;border-radius:10px;font-size:12px}
+.topbar{height:56px;display:flex;align-items:center;justify-content:space-between;padding:8px clamp(16px,3vw,38px);background:#fff;border-bottom:1px solid var(--line);gap:16px}
+.tabs{display:flex;gap:7px;min-width:0}
+.tab{padding:8px 12px;border:1px solid transparent;border-radius:10px;color:#697991;background:none;white-space:nowrap;font-weight:750;font-size:12px}
+.tab.active{background:var(--blueLight);border-color:#cbd9ff;color:#224fc3}
+.tab:disabled{opacity:.46;cursor:not-allowed}
+.topProgress{min-width:152px;display:flex;align-items:center;gap:10px;font-size:11.5px;color:var(--muted);font-weight:750}
+.bar{height:8px;border-radius:99px;background:#e5ebf4;width:110px;overflow:hidden}
+.fill{height:100%;width:0%;background:linear-gradient(90deg,#5b83f0,#11ad89);transition:width .3s}
+.workspace{width:100%;max-width:1500px;margin:0 auto;padding:16px clamp(14px,2.6vw,34px);display:grid;grid-template-columns:minmax(0,1.15fr) minmax(310px,.85fr);gap:16px;flex:1;min-height:0;align-items:stretch}
+.panel{background:var(--white);box-shadow:var(--shadow);border:1px solid var(--line);border-radius:19px;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.problem{padding:clamp(13px,1.7vw,22px);gap:10px;justify-content:flex-start}
+.eyebrow{font-size:11px;letter-spacing:.09em;color:var(--blue);font-weight:900}
+.question{font-size:clamp(17px,1.7vw,24px);line-height:1.45;margin:0;font-weight:850}
+.question small{font-size:.67em;color:var(--muted);font-weight:600}
+.hint{color:var(--muted);font-size:12px;margin:0;line-height:1.5}
+.pickGroup{display:flex;flex-direction:column;gap:7px}
+.pickTitle{font-size:12px;letter-spacing:.01em;font-weight:800;display:flex;gap:7px;align-items:center}
+.stepNumber{display:inline-grid;place-items:center;color:white;background:var(--navy2);width:21px;height:21px;border-radius:7px;font-size:11px;flex:0 0 auto}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.choice{border:1.5px solid #dce4ef;background:#fff;min-height:54px;padding:8px 11px;text-align:left;border-radius:11px;display:flex;align-items:center;justify-content:space-between;gap:6px;color:#21334e;line-height:1.4;font-weight:730;font-size:clamp(12px,1.03vw,15px);transition:background .12s,border-color .12s,transform .12s}
+.choice:hover:not(:disabled){border-color:#86a4f6;background:#f7faff;transform:translateY(-1px)}
+.choice.selected{border-color:var(--blue);background:var(--blueLight);box-shadow:inset 0 0 0 1px #8eaaff}
+.choice:disabled{cursor:default;opacity:.85}
+.choice.correct{border-color:#56c99d;background:var(--mintLight);color:#096b50}
+.choice.wrong{border-color:#df8791;background:var(--redLight);color:#a32d44}
+.choiceIcon{width:17px;height:17px;border:1.5px solid #afbed4;border-radius:100%;flex:0 0 auto;display:grid;place-items:center;font-size:12px;font-weight:900}
+.selected .choiceIcon{border-color:var(--blue);background:var(--blue);color:white}
+.choice.correct .choiceIcon{border-color:var(--mint);background:var(--mint);color:white}
+.choice.wrong .choiceIcon{border-color:var(--red);background:var(--red);color:white}
+.feedback{min-height:50px;border-radius:11px;background:#f6f8fb;border:1px dashed #dce5f0;padding:10px 12px;font-size:12px;color:#66778d;line-height:1.5;display:flex;align-items:center;gap:8px}
+.feedback.success{background:var(--mintLight);color:#0a7155;border:1px solid #a6e9cf}
+.feedback.error{background:var(--redLight);color:#a82f45;border:1px solid #f1b9c2}
+.feedback strong{font-weight:850}
+.controls{display:flex;gap:8px;margin-top:auto;align-items:center;justify-content:space-between}
+.btn{border:0;background:var(--blue);color:#fff;border-radius:10px;font-size:13px;padding:12px 17px;font-weight:850;box-shadow:0 4px 11px #3569e724;min-height:43px}
+.btn:hover:not(:disabled){background:#2456d0}
+.btn:disabled{opacity:.42;cursor:not-allowed;box-shadow:none}
+.btn.soft{background:#eef2f8;color:#526784;box-shadow:none}
+.btn.soft:hover:not(:disabled){background:#e0e9f8}
+.btn.good{background:#079b75}
+.micro{font-size:11px;color:var(--muted);font-weight:650}
+.result{background:linear-gradient(180deg,#fcfdff,#f8fbff);padding:0}
+.resultHeader{padding:19px 20px 15px;border-bottom:1px solid var(--line)}
+.resultHeader h2{font-size:16px;margin:0 0 7px}
+.resultHeader p{font-size:12px;color:var(--muted);line-height:1.55;margin:0}
+.paper{min-height:0;flex:1;overflow:auto;padding:16px 18px;scrollbar-color:#c7d4e7 transparent}
+.paperLabel{display:inline-block;font-weight:850;font-size:11px;color:#42628c;letter-spacing:.06em;margin-bottom:8px}
+.note{border:1px solid #e3eaf5;background:white;border-radius:12px;padding:11px 12px;margin-bottom:9px;box-shadow:0 2px 10px #2d45710b}
+.noteIndex{font-size:10.5px;color:#7890b0;font-weight:800;margin-bottom:5px}
+.noteText{font-size:13px;font-weight:730;line-height:1.6;white-space:pre-line;overflow-wrap:anywhere}
+.placeholder{height:170px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;color:#8a9ab0;border:1px dashed #cfd9e8;border-radius:13px;font-size:12px;line-height:1.7;padding:12px}
+.placeholderIcon{font-size:30px}
+.reference{border-top:1px solid var(--line);padding:12px 19px;background:#f2f6fd;color:#537097;font-size:12px;line-height:1.55}
+.reference strong{color:#355879}
+.proofMenu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.proofCard{display:flex;align-items:flex-start;flex-direction:column;text-align:left;gap:8px;background:#fff;padding:15px;border:1.5px solid #dbe5f3;border-radius:14px;min-height:120px}
+.proofCard:hover{background:#f8fbff;border-color:#94aaf0}
+.proofCard b{font-size:14px;line-height:1.45}
+.proofCard span{font-size:11px;color:var(--muted);line-height:1.5}
+.proofCard .pill{font-size:10px;padding:4px 7px;background:#eaf1ff;border-radius:50px;color:#285fbb;font-weight:800}
+.proofChoices .choice{min-height:73px;font-size:12.7px;line-height:1.48;font-weight:650}
+.proofChoices .choice span:first-child{white-space:pre-line}
+.finish{padding:20px;border:1px solid #a9e3cb;background:#ecfff6;border-radius:15px;text-align:center;line-height:1.65}
+.finish .star{font-size:37px}
+.finish h3{margin:6px 0;color:#097a58}
+.finish p{font-size:13px;color:#346e5c}
+@media(min-width:900px) and (min-height:620px){.workspace{height:calc(100dvh - 135px)}.panel{height:100%}.problem{overflow:auto}.choice{min-height:50px}.proofChoices .choice{min-height:67px}}
+@media(min-width:900px) and (max-height:750px){.hero{min-height:67px;padding-top:8px;padding-bottom:8px}.topbar{height:49px}.workspace{height:calc(100dvh - 116px);padding-top:11px;padding-bottom:11px}.problem{gap:7px;padding:13px 16px}.choice{min-height:46px;padding:6px 9px}.choices{gap:6px}.feedback{min-height:39px;padding:6px 9px}.question{font-size:19px}.hint{font-size:11px}.pickGroup{gap:5px}.btn{min-height:39px;padding:8px 13px}}
+@media(max-width:899px){.hero{min-height:70px}.workspace{grid-template-columns:1fr;gap:12px}.panel{overflow:visible}.result{min-height:250px}.paper{max-height:350px}.reference{font-size:11px}.hRight .record{display:none}.choice{min-height:60px}}
+@media(max-width:510px){.hero{padding:10px 14px}.logoMark{width:36px;height:36px;font-size:18px}.subtitle{font-size:10px}h1{font-size:16px}.ghost{font-size:11px;padding:8px}.topbar{padding:7px 12px;height:auto;min-height:52px}.tab{font-size:11px;padding:8px}.topProgress{min-width:95px;gap:5px;font-size:10px}.bar{width:51px}.workspace{padding:11px}.problem{padding:14px;gap:12px}.choices{gap:7px}.choice{font-size:12px;min-height:61px;padding:7px}.proofChoices .choice{font-size:11px;min-height:84px}.question{font-size:19px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero">
+ <div class="logo"><div class="logoMark">∴</div><div><h1>証明ビルダー <span style="font-size:.66em;opacity:.75">PROOF BUILDER</span></h1><p class="subtitle">数のカタチから、証明のカタチへ。選んでつくる数学。</p></div></div>
+ <div class="hRight"><div class="record" id="record">正解 0</div><button type="button" class="ghost" id="resetBtn" title="学習記録を初期化">最初から</button></div>
+</header>
+<div class="topbar">
+ <div class="tabs" aria-label="学習ステージ"><button class="tab active" id="tabRep" type="button">01 数の表し方</button><button class="tab" id="tabProof" type="button" disabled>02 証明を完成</button></div>
+ <div class="topProgress"><span id="progressText">0 / 12</span><div class="bar" role="progressbar" aria-label="進捗" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0" id="progressBar"><div class="fill" id="progressFill"></div></div></div>
+</div>
+<main class="workspace">
+ <section class="panel problem" id="problemPanel" aria-label="問題と選択肢"></section>
+ <aside class="panel result" aria-label="完成した式と証明">
+  <div class="resultHeader"><h2 id="rightTitle">完成した表し方</h2><p id="rightDesc">正しい式と文字の条件を選ぶと、ここに追加されます。</p></div>
+  <div class="paper" id="paper"><div class="placeholder"><div class="placeholderIcon">✍</div>まだ何も書かれていません。<br>左の選択肢から始めましょう。</div></div>
+  <div class="reference" id="reference"><strong>大切な約束</strong>　この教材では、自然数を 1, 2, 3, … とします。3けたの数では百の位を 0 にできません。</div>
+ </aside>
+</main>
+</div>
+<script>
+'use strict';
+// 表し方は「式だけでなく、文字の範囲まで含めて正しい」ものを選ばせる。
+// 数学的に複数の表し方が正しい問題では、正答を複数許容する。
+const I='n は整数', P='n は正の整数', Z='n は0以上の整数', N='n は負の整数';
+const digits2='a、b は整数。1 ≤ a ≤ 9、0 ≤ b ≤ 9';
+const digits3='a、b、c は整数。1 ≤ a ≤ 9、0 ≤ b ≤ 9、0 ≤ c ≤ 9';
+const allDigits2='a、b は整数。0 ≤ a、b ≤ 9';
+const allDigits3='a、b、c は整数。0 ≤ a ≤ 9、0 ≤ b ≤ 9、0 ≤ c ≤ 9';
+const nonzero2='a、b は整数。1 ≤ a、b ≤ 9';
+const nonzero3='a、b、c は整数。1 ≤ a ≤ 9、1 ≤ b ≤ 9、1 ≤ c ≤ 9';
+function q(title,exps,conds,pairs,tip){return {title,exps,conds,pairs,tip}}
+const representation=[
+ q('整数を文字で表そう',['n','2n','2n + 1','3n'],[P,I,Z,N],[[0,1]],'正の数も、0も、負の数もすべて含めるには「整数」という条件が必要です。'),
+ q('自然数を文字で表そう',['2n','n','n + 1','n − 1'],[I,Z,P,N],[[1,2],[2,1]],'このアプリでは自然数は 1、2、3、… です。nを正の整数とした n でも、nを0以上の整数とした n+1 でも表せます。'),
+ q('偶数を文字で表そう',['2n + 1','3n','2n','2n − 1'],[Z,P,N,I],[[2,3]],'2×整数で表せます。負の偶数や0も含まれるため、nは整数です。'),
+ q('正の偶数を文字で表そう',['2n − 2','2n','2n + 1','2n + 2'],[I,P,Z,N],[[1,1],[3,2]],'nを正の整数とした 2n でも、nを0以上の整数とした 2n+2 でも、2、4、6、…をすべて表せます。'),
+ q('奇数を文字で表そう',['2n − 1','2n','3n','2n + 1'],[P,Z,I,N],[[0,2],[3,2]],'奇数は 2n−1 と 2n+1 の両方で表せます。nを整数とすれば、負の奇数も含めてすべて表せます。'),
+ q('正の奇数を文字で表そう',['2n + 1','2n − 1','2n','2n − 2'],[I,Z,P,N],[[1,2],[0,1]],'nを正の整数とした 2n−1 でも、nを0以上の整数とした 2n+1 でも、1、3、5、…をすべて表せます。'),
+ q('3の倍数を文字で表そう',['3n + 1','6n','3n','n + 3'],[P,I,Z,N],[[2,1]],'3の倍数は、整数を3倍した数です。負の倍数や0も含みます。'),
+ q('連続する2つの整数を表そう',['n、n + 2','n、n + 1','2n、2n + 2','n、n + 3'],[P,Z,N,I],[[1,3]],'2つの数の差が1になることがポイント。nを整数にすれば、負の範囲も含めて表せます。'),
+ q('連続する3つの整数を表そう',['n、n + 2、n + 4','n − 1、n、n + 1','n、n + 1、n + 3','3n、3n + 1、3n + 2'],[Z,N,I,P],[[1,2]],'真ん中の整数をnとすると、前後は n−1 と n+1 です。'),
+ q('連続する2つの奇数を表そう',['2n、2n + 2','2n − 1、2n + 3','2n − 1、2n + 1','2n + 1、2n + 3'],[P,Z,N,I],[[2,3],[3,3]],'隣り合う奇数の差は2です。どちらの表し方も、nが整数ならすべての組を表せます。'),
+ q('2けたの正の整数を表そう',['a + b','10a + b','100a + b','10(a + b)'],[allDigits2,nonzero2,digits2,'a、b は正の整数'],[[1,2]],'aは十の位なので1～9、bは一の位なので0～9です。'),
+ q('3けたの正の整数を表そう',['100a + b + c','a + b + c','100a + 10b + c','100(a + b + c)'],[allDigits3,nonzero3,'a、b、c は正の整数',digits3],[[2,3]],'百の位aは1～9。十の位bと一の位cは0～9です。例えば105も表せる必要があります。')
+];
+
+const proofs=[
+ {title:'連続する2つの整数の和',subtitle:'和が奇数になることを証明',steps:[
+  {label:'文字を使って表す',options:['連続する2つの整数を n、n+2（nは整数）とする。','連続する2つの整数を n、n+1（nは整数）とする。','連続する2つの整数を 2n、2n+2（nは整数）とする。','連続する2つの整数を n、n+1（nは正の整数）とする。'],correct:1,why:'「連続する」とは差が1。負の整数も考えるため、nは整数です。'},
+  {label:'和を計算する',options:['和は n+(n+1)=2n+1 である。','和は n+(n+1)=2n である。','和は n+(n+1)=2(n+1) である。','和は n(n+1) である。'],correct:0,why:'同類項をまとめると n+n+1=2n+1 になります。'},
+  {label:'式から性質を読み取る',options:['nは整数だから、2n+1は偶数である。','nは整数だから、2n+1は正の奇数である。','nは整数だから、2n+1は奇数である。','nは整数だから、2n+1は3の倍数である。'],correct:2,why:'「整数を2倍して1を加えた数」は奇数です。'},
+  {label:'結論を書く',options:['したがって、連続する2つの整数の和は偶数である。','したがって、連続する2つの整数の積は奇数である。','したがって、連続する2つの整数の和は奇数である。','したがって、連続する2つの整数の和は正の奇数である。'],correct:2,why:'示したかった性質を、そのまま言葉で結びます。'}
+ ]},
+ {title:'連続する3つの整数の和',subtitle:'和が3の倍数になることを証明',steps:[
+  {label:'文字を使って表す',options:['連続する3つの整数を n−1、n、n+1（nは整数）とする。','連続する3つの整数を n、n+2、n+4（nは整数）とする。','連続する3つの整数を n−1、n、n+2（nは整数）とする。','連続する3つの整数を 3n、3n+1、3n+2（nは整数）とする。'],correct:0,why:'真ん中をnとして、1ずつ前後に広げます。'},
+  {label:'和を計算する',options:['和は (n−1)+n+(n+1)=3n+1 である。','和は (n−1)+n+(n+1)=3n である。','和は (n−1)+n+(n+1)=n である。','和は (n−1)+n+(n+1)=3(n+1) である。'],correct:1,why:'−1と+1が打ち消し合い、nが3つ残ります。'},
+  {label:'式から性質を読み取る',options:['nは整数だから、3nは必ず正の整数である。','nは整数だから、3nは奇数である。','nは整数だから、3nは9の倍数である。','nは整数だから、3nは3の倍数である。'],correct:3,why:'整数の3倍は、必ず3の倍数です。'},
+  {label:'結論を書く',options:['したがって、連続する3つの整数の積は3の倍数である。','したがって、連続する3つの整数の和は3の倍数である。','したがって、連続する3つの整数の和は必ず正である。','したがって、連続する3つの整数の和は奇数である。'],correct:1,why:'計算からわかった性質を、最初の命題につなぎます。'}
+ ]},
+ {title:'2つの奇数の和',subtitle:'和が偶数になることを証明',steps:[
+  {label:'文字を使って表す',options:['2つの奇数を 2a、2b（a、bは整数）とする。','2つの奇数を 2n+1、2n+3（nは整数）とする。','2つの奇数を 2a+1、2b+1（a、bは整数）とする。','2つの奇数を 2a+1、2b（a、bは整数）とする。'],correct:2,why:'2つの奇数は、同じ数とは限りません。aとbを使って別々に表します。'},
+  {label:'和を計算する',options:['和は (2a+1)+(2b+1)=2(a+b)+1 である。','和は (2a+1)+(2b+1)=2(a+b+1) である。','和は (2a+1)+(2b+1)=2ab+2 である。','和は (2a+1)+(2b+1)=a+b+2 である。'],correct:1,why:'和を整理して、2×(整数)の形をつくります。'},
+  {label:'式から性質を読み取る',options:['a+b+1は正の整数だから、和は正の偶数である。','a+b+1は整数だから、和は奇数である。','a+b+1は整数だから、2(a+b+1)は偶数である。','a+b+1は整数だから、2(a+b+1)は4の倍数である。'],correct:2,why:'aとbが整数なので、a+b+1も整数。その2倍は偶数です。'},
+  {label:'結論を書く',options:['したがって、2つの奇数の和は偶数である。','したがって、2つの奇数の差は奇数である。','したがって、2つの奇数の和は正の偶数である。','したがって、2つの奇数の和は4の倍数である。'],correct:0,why:'「正の」という余計な条件を加えないように注意します。'}
+ ]},
+ {title:'3けたの整数と各位の和',subtitle:'その差が9の倍数になることを証明',steps:[
+  {label:'文字を使って表す',options:['3けたの正の整数を a+b+c（a、b、cは整数）とする。','3けたの正の整数を 100a+10b+c（a,b,cは整数、1≤a≤9、0≤b≤9、0≤c≤9）とする。','3けたの正の整数を 100a+10b+c（a,b,cは整数、0≤a≤9、0≤b≤9、0≤c≤9）とする。','3けたの正の整数を 100a+b+c（a,b,cは整数、1≤a≤9、0≤b≤9、0≤c≤9）とする。'],correct:1,why:'位取りと各数字の範囲が必要です。'},
+  {label:'各位の数の和を表す',options:['各位の数の和は 100a+10b+c である。','各位の数の和は 10a+b+c である。','各位の数の和は a+b+c である。','各位の数の和は abc である。'],correct:2,why:'各位の「数字そのもの」を足すので a+b+c です。'},
+  {label:'差を計算する',options:['差は (100a+10b+c)−(a+b+c)=9(11a+b) である。','差は (100a+10b+c)−(a+b+c)=9(a+b+c) である。','差は (100a+10b+c)−(a+b+c)=99(a+b) である。','差は (100a+10b+c)−(a+b+c)=9(10a+b) である。'],correct:0,why:'99a+9b=9(11a+b) とくくります。'},
+  {label:'式から性質を読み取る',options:['11a+bは整数だから、この差は11の倍数である。','11a+bは正の整数だから、この差は11の倍数である。','11a+bは整数だから、この差は9の倍数である。','11a+bは整数だから、この差は99の倍数である。'],correct:2,why:'整数の9倍は9の倍数。9(11a+b)の形が証拠です。'},
+  {label:'結論を書く',options:['したがって、3けたの正の整数は必ず9の倍数である。','したがって、3けたの正の整数と各位の数の和との差は9の倍数である。','したがって、3けたの正の整数の各位の数の和は9の倍数である。','したがって、3けたの正の整数と各位の数の積との差は9の倍数である。'],correct:1,why:'「その整数」と「各位の数字の和」との差が9の倍数と示しました。'}
+ ]}
+];
+
+const state={mode:'rep',repIndex:0,selectedExpr:null,selectedCond:null,repValidated:false,repCorrect:false,completed:[],attempts:0,correct:0,proofIndex:null,proofStep:0,proofSelected:null,proofValidated:false,proofCorrect:false,proofLines:[],finishedProofs:new Set()};
+const $=id=>document.getElementById(id);
+const el=(tag,cls,txt)=>{const x=document.createElement(tag);if(cls)x.className=cls;if(txt!==undefined)x.textContent=txt;return x;};
+const mkBtn=(label,cls,handler)=>{const b=el('button',cls,label);b.type='button';b.addEventListener('click',handler);return b;};
+function addText(parent,tag,cls,txt){const x=el(tag,cls,txt);parent.append(x);return x;}
+function setRecord(){ $('record').textContent=`正解 ${state.correct} ・挑戦 ${state.attempts}`; }
+function header(){
+ const rep=state.mode==='rep', r=state.repIndex;
+ $('tabRep').classList.toggle('active',rep);$('tabProof').classList.toggle('active',!rep);
+ $('tabProof').disabled=state.completed.length<representation.length;
+ $('tabRep').disabled=false;
+ const total=rep?representation.length:(state.proofIndex===null?proofs.length:proofs[state.proofIndex].steps.length);
+ const done=rep?state.completed.length:(state.proofIndex===null?state.finishedProofs.size:state.proofStep);
+ $('progressText').textContent=`${done} / ${total}`;$('progressBar').setAttribute('aria-valuemax',total);$('progressBar').setAttribute('aria-valuenow',done);$('progressFill').style.width=100*done/total+'%';
+ setRecord();
+}
+function choiceGrid(options,selected,disabled,choose,validated=false,correctIndex=-1){
+ const box=el('div','choices');
+ options.forEach((option,i)=>{
+  const cls='choice'+(selected===i?' selected':'')+(validated&&selected===i?(i===correctIndex?' correct':' wrong'):'');
+  const b=el('button',cls);b.type='button';b.disabled=disabled;b.setAttribute('aria-pressed',selected===i?'true':'false');
+  const t=el('span','',option),ic=el('span','choiceIcon',selected===i?'✓':'');ic.setAttribute('aria-hidden','true');b.append(t,ic);b.addEventListener('click',()=>choose(i));box.append(b);
+ });return box;
+}
+function choiceGroup(parent,title,idx,options,selected,disabled,choose,valid=false,correct=-1,custom=''){
+ const group=el('div','pickGroup');addText(group,'div','pickTitle',title).prepend(el('span','stepNumber',String(idx)));
+ const grid=choiceGrid(options,selected,disabled,choose,valid,correct);if(custom)grid.classList.add(custom);group.append(grid);parent.append(group);
+}
+function fb(parent,message,status='neutral'){
+ const x=el('div','feedback'+(status!=='neutral'?' '+status:''));x.setAttribute('role','status');x.setAttribute('aria-live','polite');x.textContent=message;parent.append(x);
+}
+function renderRepresentation(){
+ const p=$('problemPanel');p.replaceChildren();const data=representation[state.repIndex];
+ addText(p,'div','eyebrow',`MISSION ${String(state.repIndex+1).padStart(2,'0')} / ${String(representation.length).padStart(2,'0')}`);
+ addText(p,'h2','question',data.title);
+ addText(p,'p','hint','① 文字式 → ② 文字の条件の順に選びましょう。両方そろって初めて完成です。');
+ choiceGroup(p,'どの式で表す？',1,data.exps,state.selectedExpr,state.repValidated&&state.repCorrect,i=>{state.selectedExpr=i;state.repValidated=false;renderRepresentation()},state.repValidated,state.repCorrect?state.selectedExpr:-1);
+ choiceGroup(p,'文字はどんな数？',2,data.conds,state.selectedCond,state.repValidated&&state.repCorrect,i=>{state.selectedCond=i;state.repValidated=false;renderRepresentation()},state.repValidated,state.repCorrect?state.selectedCond:-1);
+ if(state.repValidated){fb(p,(state.repCorrect?'正解！ ':'あと一歩。 ')+data.tip,state.repCorrect?'success':'error');}
+ else{fb(p,'式が合っていても、文字の条件が違うと正しく表せません。');}
+ const controls=el('div','controls');
+ controls.append(addText(el('div','',''),'span','micro',`クリア ${state.completed.length} / ${representation.length}`));
+ if(state.repValidated&&state.repCorrect){controls.append(mkBtn(state.repIndex===representation.length-1?'証明ステージへ →':'次の問題へ →','btn good',()=>{state.repIndex++;state.selectedExpr=null;state.selectedCond=null;state.repValidated=false;state.repCorrect=false;if(state.repIndex===representation.length){state.mode='proof';state.proofIndex=null;}render();}));}
+ else{const b=mkBtn('この組み合わせで決定','btn',()=>{
+  state.attempts++;const pass=data.pairs.some(([e,c])=>e===state.selectedExpr&&c===state.selectedCond);state.repCorrect=pass;state.repValidated=true;
+  if(pass){state.correct++;state.completed.push({title:data.title,expr:data.exps[state.selectedExpr],cond:data.conds[state.selectedCond]});}
+  render();});b.disabled=state.selectedExpr===null||state.selectedCond===null;controls.append(b);}
+ p.append(controls);
+}
+function renderRepresentationPaper(){
+ $('rightTitle').textContent='完成した表し方';$('rightDesc').textContent='式と文字の条件をセットで整理しよう。';
+ $('reference').replaceChildren();const st=el('strong','','大切な約束');$('reference').append(st,document.createTextNode('　この教材では、自然数を1、2、3、…とします。「正の整数」と同じ意味です。'));
+ const paper=$('paper');paper.replaceChildren();
+ if(!state.completed.length){paper.append(el('div','placeholder','まだ記録はありません。\n式と文字の条件を選ぶと、ここに追加されます。'));return;}
+ addText(paper,'div','paperLabel','MY FORMULA NOTE');
+ state.completed.forEach((item,i)=>{const n=el('div','note');addText(n,'div','noteIndex',`NO. ${String(i+1).padStart(2,'0')}　${item.title}`);addText(n,'div','noteText',`${item.expr}\n（${item.cond}）`);paper.append(n)});
+ const notes=paper.querySelectorAll('.note');if(notes.length&&state.completed.length===state.repIndex+1)notes[notes.length-1].scrollIntoView?.({block:'nearest'});
+}
+function renderProofMenu(){
+ const p=$('problemPanel');p.replaceChildren();addText(p,'div','eyebrow','MISSION COMPLETE → NEXT STAGE');
+ addText(p,'h2','question','今度は「証明」を完成させよう！');addText(p,'p','hint','順番に正しい文章を選ぶと、右側に1行ずつ証明が組み上がります。');
+ const menu=el('div','proofMenu');proofs.forEach((proof,i)=>{const card=el('button','proofCard');card.type='button';card.append(el('span','pill',state.finishedProofs.has(i)?'✓ CLEAR':`PROOF ${String(i+1).padStart(2,'0')}`),el('b','',proof.title),el('span','',proof.subtitle));card.addEventListener('click',()=>{state.proofIndex=i;state.proofStep=0;state.proofSelected=null;state.proofValidated=false;state.proofCorrect=false;state.proofLines=[];render()});menu.append(card)});p.append(menu);
+ fb(p,`表し方ステージ ${representation.length} 問クリア。証明は ${state.finishedProofs.size} / ${proofs.length} 題クリア。`,'success');
+ $('rightTitle').textContent='証明を書くための準備';$('rightDesc').textContent='左から挑戦する証明を選んでください。';
+ const paper=$('paper');paper.replaceChildren();addText(paper,'div','paperLabel','選択のポイント');
+ ["1　文字を使って数を表す",'2　計算して、目的の形に変形する','3　文字の条件から性質を説明する','4　示したい結論を書く'].forEach((x,i)=>{const n=el('div','note');addText(n,'div','noteIndex',`STEP ${i+1}`);addText(n,'div','noteText',x);paper.append(n)});
+ $('reference').replaceChildren(el('strong','','証明の鉄則'),document.createTextNode('　「文字の条件」→「計算」→「整数だから」→「結論」のつながりを意識しよう。'));
+}
+function renderProof(){
+ const data=proofs[state.proofIndex];const p=$('problemPanel');p.replaceChildren();
+ addText(p,'div','eyebrow',`PROOF ${String(state.proofIndex+1).padStart(2,'0')} / ${String(proofs.length).padStart(2,'0')}`);
+ addText(p,'h2','question',data.title+'を証明しよう');
+ addText(p,'p','hint',data.subtitle+'。正しい文章を選んで、証明を一行ずつ完成させます。');
+ if(state.proofStep===data.steps.length){
+  const finish=el('div','finish');addText(finish,'div','star','✦');addText(finish,'h3','','証明完成！');addText(finish,'p','','式・条件・理由・結論がつながりました。右側の完成文を読み返してみよう。');p.append(finish);
+  const controls=el('div','controls');controls.append(mkBtn('証明一覧にもどる','btn soft',()=>{state.proofIndex=null;render()}));controls.append(mkBtn('同じ証明をもう一度','btn good',()=>{state.proofStep=0;state.proofSelected=null;state.proofValidated=false;state.proofLines=[];render()}));p.append(controls);renderProofPaper();return;
+ }
+ const step=data.steps[state.proofStep];
+ addText(p,'div','pickTitle',`STEP ${state.proofStep+1} / ${data.steps.length}　${step.label}`);
+ const grid=choiceGrid(step.options,state.proofSelected,state.proofValidated&&state.proofCorrect,i=>{state.proofSelected=i;state.proofValidated=false;renderProof()},state.proofValidated,step.correct);grid.classList.add('proofChoices');p.append(grid);
+ if(state.proofValidated)fb(p,(state.proofCorrect?'正解！ ':'もう一度考えよう。 ')+step.why,state.proofCorrect?'success':'error');
+ else fb(p,'証明の流れに合う文章を1つ選んでください。');
+ const controls=el('div','controls');controls.append(mkBtn('← 証明を選び直す','btn soft',()=>{state.proofIndex=null;render()}));
+ if(state.proofValidated&&state.proofCorrect){controls.append(mkBtn(state.proofStep===data.steps.length-1?'証明を完成！':'次の1行へ →','btn good',()=>{
+  state.proofLines.push(step.options[state.proofSelected]);state.proofStep++;state.proofSelected=null;state.proofValidated=false;state.proofCorrect=false;
+  if(state.proofStep===data.steps.length){state.finishedProofs.add(state.proofIndex)}render();}));}
+ else{const b=mkBtn('この文章で決定','btn',()=>{state.attempts++;state.proofCorrect=state.proofSelected===step.correct;state.proofValidated=true;if(state.proofCorrect)state.correct++;render()});b.disabled=state.proofSelected===null;controls.append(b);}
+ p.append(controls);renderProofPaper();
+}
+function renderProofPaper(){
+ const data=proofs[state.proofIndex];$('rightTitle').textContent='組み立て中の証明';$('rightDesc').textContent=data.subtitle;
+ const paper=$('paper');paper.replaceChildren();addText(paper,'div','paperLabel','MY PROOF');
+ if(!state.proofLines.length)paper.append(el('div','placeholder','まだ証明は始まっていません。\n左から正しい1行を選びましょう。'));
+ state.proofLines.forEach((line,i)=>{const n=el('div','note');addText(n,'div','noteIndex',`STEP ${i+1}　✓`);addText(n,'div','noteText',line);paper.append(n)});
+ const remaining=data.steps.length-state.proofStep;if(remaining>0){const n=el('div','note');n.style.borderStyle='dashed';n.style.opacity='.6';addText(n,'div','noteIndex',`STEP ${state.proofStep+1}　次に選ぶ文章`);addText(n,'div','noteText','…');paper.append(n)}
+ $('reference').replaceChildren(el('strong','','証明のチェック'),document.createTextNode('　「文字の範囲」「式の変形」「整数なので」「結論」の4点がそろっているかな？'));
+}
+function render(){header();if(state.mode==='rep'){renderRepresentation();renderRepresentationPaper()}else if(state.proofIndex===null)renderProofMenu();else renderProof()}
+$('resetBtn').addEventListener('click',()=>{if(!window.confirm('学習の記録を消して、最初からやり直しますか？'))return;
+ state.mode='rep';state.repIndex=0;state.selectedExpr=null;state.selectedCond=null;state.repValidated=false;state.repCorrect=false;state.completed=[];state.attempts=0;state.correct=0;state.proofIndex=null;state.proofStep=0;state.proofSelected=null;state.proofValidated=false;state.proofCorrect=false;state.proofLines=[];state.finishedProofs=new Set();render();});
+$('tabRep').addEventListener('click',()=>{if(state.mode==='rep')return;state.mode='rep';state.repIndex=representation.length-1;state.selectedExpr=representation[state.repIndex].pairs[0][0];state.selectedCond=representation[state.repIndex].pairs[0][1];state.repValidated=true;state.repCorrect=true;render()});
+$('tabProof').addEventListener('click',()=>{if(state.completed.length<representation.length)return;state.mode='proof';render()});
+render();
+</script>
+</body>
+</html>
