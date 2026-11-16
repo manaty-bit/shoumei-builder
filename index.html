@@ -491,8 +491,8 @@ function toTeX(source){
   return source.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]/g,c=>'^{'+supers[c]+'}')
     .replace(/＋/g,'+').replace(/[－−]/g,'-')
     .replace(/×/g,'\\times ').replace(/÷/g,'\\div ')
-    .replace(/[＝]/g,'=').replace(/≦/g,'\\leq ')
-    .replace(/≧/g,'\\geq ').replace(/≠/g,'\\ne ')
+    .replace(/[＝]/g,'=').replace(/≦/g,'\\leqq ')
+    .replace(/≧/g,'\\geqq ').replace(/≠/g,'\\ne ')
     .replace(/π/g,'\\pi ');
 }
 function typesetTeX(span){
