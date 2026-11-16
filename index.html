@@ -92,6 +92,89 @@
 @keyframes find-success-arrive{from{opacity:.6;transform:translateY(5px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media (min-width:1001px) and (max-height:720px){.find-success-notice{padding:9px 11px;margin-bottom:8px;gap:10px}.find-success-icon{width:36px;height:36px;font-size:21px}.find-success-copy strong{font-size:16px}.find-success-copy span{font-size:11px}}
 @media(max-width:600px){.find-success-notice{padding:10px 11px;gap:10px;margin-bottom:10px}.find-success-icon{height:37px;width:37px;font-size:21px}.find-success-copy strong{font-size:16px}.find-success-copy span{font-size:11px}}
+
+/* v5 UI polish: 教科書に近い数式、読みやすい4択、自然な折り返し */
+body{
+  font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,"Noto Sans JP",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.statement,.choice,.proof-line,.latest-proof,.feedback,.hint,.buddy-text p,
+.guide p,.find-success-copy,.home-hero p,.stage-select-detail strong{
+  line-break:strict;
+  word-break:normal;
+  overflow-wrap:break-word;
+  text-wrap:pretty;
+}
+.math-run{
+  font-family:"Cambria Math","STIX Two Math","Noto Sans Math","Times New Roman",serif;
+  font-style:normal;
+  font-weight:600;
+  font-variant-numeric:lining-nums;
+  letter-spacing:.012em;
+  white-space:nowrap;
+  font-size:1.065em;
+  font-feature-settings:"kern" 1;
+}
+.choice-copy,.proof-copy{min-width:0;flex:1}
+.choice-copy{white-space:pre-line}
+.choice{font-size:clamp(14px,1.06vw,16px);line-height:1.65;font-weight:750;min-height:79px;padding:11px 13px;gap:11px;align-items:center}
+.choice .letter{width:34px;height:34px;font-size:14px}
+.choices{gap:10px;align-content:start}
+.prompt{font-size:clamp(17px,1.29vw,20px);line-height:1.55;letter-spacing:.005em;margin-bottom:11px}
+.statement{font-size:clamp(14px,1.1vw,17px);line-height:1.78;font-weight:700;letter-spacing:.006em;overflow-wrap:break-word}
+.title{font-size:clamp(21px,1.84vw,27px);line-height:1.38}
+.proof-line{font-size:clamp(13.5px,.98vw,15px);line-height:1.66;gap:11px}
+.proof-line.clickable{min-height:51px}
+.proof-line .num{width:25px;height:25px;font-size:12px}
+.latest-proof{font-size:13.5px;line-height:1.68;max-height:88px}
+.feedback{font-size:13px;line-height:1.65}
+.work-head h2{font-size:19px;line-height:1.35}
+.work-head p{font-size:12px;line-height:1.45}
+.stage strong{font-size:13px}
+.stage small{font-size:11px}
+.sectiontitle{font-size:12px}
+.guide summary,.small,.hint,.nav .subbtn{font-size:12.5px}
+.home-action-text strong{font-size:20px}
+.stage-select-detail strong{font-size:13px;line-height:1.42}
+.find-success-copy strong{line-height:1.4}
+@media (min-width:1001px) and (max-height:720px){
+  .choice{font-size:13.5px;line-height:1.55;min-height:64px;padding:7px 10px}
+  .choice .letter{width:29px;height:29px;font-size:12px}
+  .choices{gap:7px}
+  .statement{font-size:14px;line-height:1.62}
+  .prompt{font-size:16px;margin-bottom:6px}
+  .proof-line{font-size:12.5px;line-height:1.45}
+  .latest-proof{font-size:12px;line-height:1.5;max-height:62px}
+  .feedback{font-size:11.5px}
+  .work-head h2{font-size:16px}
+  .stage strong{font-size:12px}
+  .stage small{font-size:10px}
+}
+@media (max-width:1000px){
+  .choice{font-size:15px;line-height:1.68}
+  .statement{font-size:16px}
+  .proof-line{font-size:14px}
+  .latest-proof{max-height:none}
+}
+@media (max-width:600px){
+  .title{font-size:21px}
+  .statement{font-size:15px;line-height:1.7;padding:12px 13px}
+  .choice{font-size:14.5px;line-height:1.65;min-height:64px;padding:10px 11px;gap:10px}
+  .choice .letter{width:30px;height:30px;font-size:13px}
+  .choices{gap:9px}
+  .prompt{font-size:18px;line-height:1.5}
+  .proof-line{font-size:13.5px;line-height:1.55;padding:11px}
+  .proof-line .num{width:24px;height:24px}
+  .feedback{font-size:12.5px}
+  .latest-proof{font-size:13px;line-height:1.58}
+  .work-head h2{font-size:17px}
+  .work-head p{font-size:11px}
+  .stage strong{font-size:11px}
+  .home-action-text strong{font-size:17px}
+  .stage-select-detail strong{font-size:11.5px}
+}
+
 </style></head><body><div id="app" class="home-mode">
 <header class="top"><div class="top-inner"><div class="identity"><div class="logo" aria-hidden="true">✦</div><div><h1>証明ビルダー <span class="mini-en">PROOF QUEST</span></h1><p class="tagline">ひらめきをつなげて、証明を完成させよう！</p></div></div><div class="top-aux"><span class="vtag">⌨ 数字キー 1〜4 でも回答OK</span><button class="topbtn" id="homeBtn">⌂ ホーム</button><button class="topbtn" id="recordBtn">🏅 学習記録</button></div></div></header>
 <section id="homeScreen" class="home-screen" aria-label="証明ビルダー ホーム画面"></section>
@@ -394,6 +477,45 @@ const FIND_DISTRACTORS = [
 'use strict';
 const $=id=>document.getElementById(id);
 function make(tag,cl,txt){const e=document.createElement(tag);if(cl)e.className=cl;if(txt!==undefined)e.textContent=txt;return e}
+/* 数式をTeX系に近い書体で表示。文字列は置き換えず、表示用のspanのみ追加する。 */
+function appendMathSegment(parent,source){
+  if(!source)return;
+  const span=make('span','math-run',source);
+  span.setAttribute('translate','no');
+  parent.append(span);
+}
+function appendMathExpression(parent,source){
+  let depth=0,start=0;
+  for(let i=0;i<source.length;i++){
+    const c=source[i];
+    const isEquals=c==='＝'||c==='=';
+    const isLongSum=source.length>23&&(c==='＋'||c==='－'||c==='−');
+    if(depth===0&&i>start&&(isEquals||isLongSum)){
+      appendMathSegment(parent,source.slice(start,i));
+      parent.append(make('wbr'));
+      start=i;
+    }
+    if(c==='(')depth++;
+    if(c===')')depth=Math.max(0,depth-1);
+  }
+  appendMathSegment(parent,source.slice(start));
+}
+function makeMath(tag,cls,value){
+  const element=make(tag,cls);
+  const source=String(value??'');
+  const pattern=/[0-9A-Za-z⁰¹²³⁴⁵⁶⁷⁸⁹()+＋－−×÷＝=≦≧]+/g;
+  let last=0,match;
+  while((match=pattern.exec(source))){
+    const word=match[0];
+    const isMath=/[＋－−×÷＝=≦≧]/.test(word)||/[0-9][a-z]|[a-z][0-9]/.test(word)||/^[a-z]$/.test(word);
+    if(!isMath)continue;
+    if(match.index>last)element.append(document.createTextNode(source.slice(last,match.index)));
+    appendMathExpression(element,word);
+    last=pattern.lastIndex;
+  }
+  if(last<source.length)element.append(document.createTextNode(source.slice(last)));
+  return element;
+}
 function btn(txt,cls,fn){const b=make('button',cls,txt);b.type='button';b.addEventListener('click',fn);return b}
 const LEVELS=['basic','advanced'];
 const PHASES=[{label:'証明のパーツ',sub:'文字→計算→理由→結論'},{label:'ならべかえ',sub:'正しい順番を考えよう'}];
@@ -533,18 +655,18 @@ function gotoQ(i){const list=dataset();advance(state.mode,state.level,(i+list.le
 function nextQ(){gotoQ(state.index+1)}
 function ordered(arr,salt=0){const out=[...arr];let seed=(((state.index+1)*2917+(state.retry+1)*773+(state.level==='basic'?109:907)+(state.phase+3)*281+salt)*2654435761)>>>0;for(let i=out.length-1;i>0;i--){seed=(Math.imul(seed,1664525)+1013904223)>>>0;const j=seed%(i+1);[out[i],out[j]]=[out[j],out[i]]}return out}
 function setFeedback(msg,tone=''){state.feedback=msg;state.tone=tone;render()}
-function feedback(fallback){const e=make('div','feedback'+(state.tone?' '+state.tone:''),state.feedback||fallback);e.setAttribute('role','status');e.setAttribute('aria-live','polite');return e}
-function choiceButton(label,i,fn){const b=btn('','choice',fn);b.append(make('span','letter',String.fromCharCode(65+i)),make('span','',label));return b}
+function feedback(fallback){const e=makeMath('div','feedback'+(state.tone?' '+state.tone:''),state.feedback||fallback);e.setAttribute('role','status');e.setAttribute('aria-live','polite');return e}
+function choiceButton(label,i,fn){const b=btn('','choice',fn);b.append(make('span','letter',String.fromCharCode(65+i)),makeMath('span','choice-copy',label));return b}
 function completeRate(level){return {build:PROOFS[level].filter(x=>progress.build[level][x.id]?.guided).length,order:PROOFS[level].filter(x=>progress.build[level][x.id]?.order).length,find:ERRORS[level].filter(x=>progress.find[level][x.id]?.date).length,buildTotal:PROOFS[level].length,findTotal:ERRORS[level].length}}
 function renderHeader(){for(const [id,on] of [['buildTab',state.mode==='build'],['findTab',state.mode==='find'],['basicTab',state.level==='basic'],['advancedTab',state.level==='advanced']]){$(id).classList.toggle('active',on);$(id).setAttribute('aria-pressed',String(on))}const s=completeRate(state.level);$('stats').textContent=`証明 ${s.build}/${s.buildTotal} ｜ 順番チャレンジ ${s.order}/${s.buildTotal} ｜ 誤り探し ${s.find}/${s.findTotal}`}
 function stagebar(){const h=$('stagebar');h.replaceChildren();if(state.mode==='find'){['誤りの行を発見','理由を選ぶ','正しく直す'].forEach((label,i)=>{const index=['point','reason','repair','done'].indexOf(state.errorStep);const x=make('div','stage'+(index===i?' active':'')+(index>i?' done':''));x.append(make('span','stage-n',index>i?'✓':String(i+1)),make('div','',label));h.append(x)});return}PHASES.forEach((p,i)=>{const j=i+1,done=!!bk()[j===1?'guided':'order'];const b=btn('','stage'+(j===state.phase?' active':'')+(done?' done':''),()=>advance(state.mode,state.level,state.index,j));b.append(make('span','stage-n',done?'✓':String(j)));const label=make('div');label.append(make('strong','',p.label),make('small','',p.sub));b.append(label);h.append(b)})}
-function renderProblem(){const d=cur(),host=$('problem');host.replaceChildren();host.append(make('p','sectiontitle',`${state.mode==='build'?'証明をつくる':'間違いを見抜く'} / ${state.level==='basic'?'🌱 基礎':'🚀 発展'} / ${state.index+1}問目`));host.append(make('h2','title',d.title));host.append(make('div','statement',d.statement));const diagram=diagramFor(d.id,false);if(diagram)host.append(diagram);
+function renderProblem(){const d=cur(),host=$('problem');host.replaceChildren();host.append(make('p','sectiontitle',`${state.mode==='build'?'証明をつくる':'間違いを見抜く'} / ${state.level==='basic'?'🌱 基礎':'🚀 発展'} / ${state.index+1}問目`));host.append(makeMath('h2','title',d.title));host.append(makeMath('div','statement',d.statement));const diagram=diagramFor(d.id,false);if(diagram)host.append(diagram);
 const nav=make('div','nav'),group=make('div','nav-group');group.append(btn('← 前の問題','subbtn',()=>gotoQ(state.index-1)),btn('次の問題 →','subbtn',nextQ));nav.append(group,btn('🗂 ステージ選択','subbtn',openStages));host.append(nav);
 if(state.showList){const list=make('div','problem-list');dataset().forEach((x,i)=>{const done=state.mode==='build'?!!progress.build[state.level][x.id]?.guided:!!progress.find[state.level][x.id]?.date;const b=btn((done?'✓ ':'')+String(i+1).padStart(2,'0'),'qnum'+(i===state.index?' active':'')+(done?' complete':''),()=>gotoQ(i));b.title=x.title;list.append(b)});host.append(list)}
 if(state.mode==='build'){const guide=make('div','guide'),details=make('details');details.open=state.showGuide;details.addEventListener('toggle',()=>state.showGuide=details.open);details.append(make('summary','','基本の文字式を確認する'));details.append(make('p','','偶数：2n、奇数：2n＋1（n は整数）。正の奇数：2n－1（n は正の整数）。2けた：10a＋b（a は1～9、b は0～9の整数）。3けた：100a＋10b＋c（a は1～9、b・c は0～9の整数）。数字の入れ替え後に先頭が0になる場合も、数として扱います。'));guide.append(details);host.append(guide)}else host.append(make('div','hint','計算ミスだけでなく、文字の条件や「なぜ整数と言えるか」に着目しよう。最後の修正もボタンで選べます。'));
 if(!diagram){const info=make('div','buddy-card');info.append(make('span','buddy-face',state.mode==='build'?'🤖':'🕵️'));const note=make('div','buddy-text');note.append(make('b','','ナビからのひとこと'));let msg='';if(state.mode==='build'){msg=state.step===0?'まずは、文字の置き方と条件をチェック！':state.step<3?'式の計算は正しいかな？ つながりを考えよう。':'最後は「整数だから」という理由が大切だよ。'}else{msg=state.errorStep==='point'?'証明を1行ずつ読むと、隠れた誤りが見えてくるよ。':state.errorStep==='reason'?'どこで論理がくずれたか、理由を考えてみよう。':'正しい一文を選んで、証明を復活させよう！'}note.append(make('p','',msg));info.append(note);host.insertBefore(info,nav)}}
-function openNotebook(d,count){const host=$('modalRoot');host.replaceChildren();const cover=make('div','overlay'),dlg=make('div','dialog');dlg.setAttribute('role','dialog');dlg.setAttribute('aria-modal','true');dlg.setAttribute('aria-label','証明ノート');dlg.append(make('h2','','📒 証明ノート'));dlg.append(make('p','','選んで完成させた文を、上から順番に確認しよう。'));const list=make('div','notebook');d.steps.forEach((s,i)=>{const box=make('div','proof-line '+(i<count?'done':'gray'));box.append(make('span','num',i<count?'✓':String(i+1)),make('span','',i<count?s.correct:'まだ完成していません'));list.append(box)});dlg.append(list);const row=make('div','dialog-controls');row.append(btn('閉じる','primary',()=>host.replaceChildren()));dlg.append(row);cover.append(dlg);cover.addEventListener('click',e=>{if(e.target===cover)host.replaceChildren()});host.append(cover)}
-function renderProofLines(host,d,count){const wrap=make('div','proof-note');const head=make('div','note-head');head.append(make('span','note-title','📒 いまの証明ノート'),btn('全体を見る ›','notebook-open',()=>openNotebook(d,count)));wrap.append(head);const dots=make('div','proof-dots');d.steps.forEach((s,i)=>dots.append(make('span','proof-dot '+(i<count?'finished':i===count?'current':''),i<count?'✓':String(i+1))));wrap.append(dots);wrap.append(make('div','latest-proof'+(count?'':' placeholder'),count?'✓ '+d.steps[count-1].correct:'ここから証明がスタート！ 正しい文を選んでね。'));host.append(wrap)}
+function openNotebook(d,count){const host=$('modalRoot');host.replaceChildren();const cover=make('div','overlay'),dlg=make('div','dialog');dlg.setAttribute('role','dialog');dlg.setAttribute('aria-modal','true');dlg.setAttribute('aria-label','証明ノート');dlg.append(make('h2','','📒 証明ノート'));dlg.append(make('p','','選んで完成させた文を、上から順番に確認しよう。'));const list=make('div','notebook');d.steps.forEach((s,i)=>{const box=make('div','proof-line '+(i<count?'done':'gray'));box.append(make('span','num',i<count?'✓':String(i+1)),makeMath('span','proof-copy',i<count?s.correct:'まだ完成していません'));list.append(box)});dlg.append(list);const row=make('div','dialog-controls');row.append(btn('閉じる','primary',()=>host.replaceChildren()));dlg.append(row);cover.append(dlg);cover.addEventListener('click',e=>{if(e.target===cover)host.replaceChildren()});host.append(cover)}
+function renderProofLines(host,d,count){const wrap=make('div','proof-note');const head=make('div','note-head');head.append(make('span','note-title','📒 いまの証明ノート'),btn('全体を見る ›','notebook-open',()=>openNotebook(d,count)));wrap.append(head);const dots=make('div','proof-dots');d.steps.forEach((s,i)=>dots.append(make('span','proof-dot '+(i<count?'finished':i===count?'current':''),i<count?'✓':String(i+1))));wrap.append(dots);wrap.append(makeMath('div','latest-proof'+(count?'':' placeholder'),count?'✓ '+d.steps[count-1].correct:'ここから証明がスタート！ 正しい文を選んでね。'));host.append(wrap)}
 function doneView(host,isBuild){const d=cur(),x=make('div','success');x.append(make('div','star','🌟'),make('h3','',isBuild?'MISSION CLEAR!':'修復ミッション成功！'),make('p','',isBuild?'文字の表し方、式の変形、整数である理由、結論を順に確認しました。':'誤りの場所・理由・修正方法まで正しく選べました。'));host.append(x);
 const row=make('div','actionrow');row.append(btn('もう一度挑戦','subbtn',redo));if(isBuild&&state.phase===1)row.append(btn('順番チャレンジへ →','primary good',()=>advance(state.mode,state.level,state.index,2)));else row.append(btn('次の問題へ →','primary good',nextQ));host.append(row);if(isBuild&&state.phase===1)host.append(make('p','emptyhint','順番チャレンジは任意です。ここで次の問題に進んでもOK。'));}
 function renderWork(){const host=$('work');host.replaceChildren();if(state.mode==='find')return renderFind(host);const d=cur();$('workTitle').textContent=PHASES[state.phase-1].label;$('workDesc').textContent=PHASES[state.phase-1].sub;$('workCount').textContent=`${state.step}/${d.steps.length}行`;
@@ -588,9 +710,9 @@ function renderFind(host){const d=cur();
  $('workDesc').textContent='① 誤りを探す → ② 理由を選ぶ → ③ 正しく直す';
  $('workCount').textContent=`${state.index+1}/${dataset().length}問`;
 if(completed())return doneView(host,false);
-if(state.errorStep==='point'){host.append(make('h3','prompt','間違っている1行を選ぼう。'));const lines=make('div');d.lines.forEach((line,i)=>{const b=btn('','proof-line clickable',()=>{if(i===d.wrong){state.errorStep='reason';state.feedback='';state.tone='';render();if(window.innerWidth<=600)document.querySelector('.quest-card')?.scrollIntoView({block:'start',behavior:'smooth'})}else{state.wrong++;setFeedback('この行は誤りではありません。文字の条件と前後の式を読み直そう。','bad')}});b.append(make('span','num',String(i+1)),make('span','',line),make('span','meta','⌕'));lines.append(b)});host.append(lines);host.append(feedback('証明のなかに数学的に正しくない行が1か所あります。'));return}
-if(state.errorStep==='reason'){host.append(findSuccessNotice('reason',d.wrong+1));host.append(make('h3','prompt','なぜ、この行が間違っている？'));host.append(make('div','proof-line revealed',`見つけた誤り（${d.wrong+1}行目）　${d.lines[d.wrong]}`));const options=ordered([{txt:FIND_REASON[d.id],correct:true},...ordered(FIND_DISTRACTORS,99).slice(0,3).map(txt=>({txt,correct:false}))],133);const list=make('div','choices');options.forEach((o,i)=>list.append(choiceButton(o.txt,i,()=>{if(o.correct){state.errorStep='repair';state.feedback='';state.tone='';render();if(window.innerWidth<=600)document.querySelector('.quest-card')?.scrollIntoView({block:'start',behavior:'smooth'})}else{state.wrong++;setFeedback('ちがいます。計算・表し方・整数の条件のどれが問題かを考えよう。','bad')}})));host.append(list);host.append(feedback('誤りの理由を1つ選んでください。'));return}
-host.append(findSuccessNotice('repair',d.wrong+1));host.append(make('h3','prompt','正しい1行に直そう！'));host.append(make('div','proof-line revealed',`修正する行（${d.wrong+1}行目）　${d.lines[d.wrong]}`));const choices=ordered([{txt:d.fix,correct:true},{txt:d.lines[d.wrong],correct:false},...FIX_DISTRACTORS[d.id].map(txt=>({txt,correct:false}))],191);const list=make('div','choices');choices.forEach((o,i)=>list.append(choiceButton(o.txt,i,()=>{if(o.correct){markFind()}else{state.wrong++;setFeedback(state.wrong%3===2?'考え方：'+d.reason:'その直し方では、まだ数学的に正しくありません。','bad')}})));host.append(list);host.append(feedback('修正後の文を選んでください。'));host.append(make('p','small muted','入力は必要ありません。修復できると次の問題に進めます。'))}
+if(state.errorStep==='point'){host.append(make('h3','prompt','間違っている1行を選ぼう。'));const lines=make('div');d.lines.forEach((line,i)=>{const b=btn('','proof-line clickable',()=>{if(i===d.wrong){state.errorStep='reason';state.feedback='';state.tone='';render();if(window.innerWidth<=600)document.querySelector('.quest-card')?.scrollIntoView({block:'start',behavior:'smooth'})}else{state.wrong++;setFeedback('この行は誤りではありません。文字の条件と前後の式を読み直そう。','bad')}});b.append(make('span','num',String(i+1)),makeMath('span','proof-copy',line),make('span','meta','⌕'));lines.append(b)});host.append(lines);host.append(feedback('証明のなかに数学的に正しくない行が1か所あります。'));return}
+if(state.errorStep==='reason'){host.append(findSuccessNotice('reason',d.wrong+1));host.append(make('h3','prompt','なぜ、この行が間違っている？'));host.append(makeMath('div','proof-line revealed',`見つけた誤り（${d.wrong+1}行目）　${d.lines[d.wrong]}`));const options=ordered([{txt:FIND_REASON[d.id],correct:true},...ordered(FIND_DISTRACTORS,99).slice(0,3).map(txt=>({txt,correct:false}))],133);const list=make('div','choices');options.forEach((o,i)=>list.append(choiceButton(o.txt,i,()=>{if(o.correct){state.errorStep='repair';state.feedback='';state.tone='';render();if(window.innerWidth<=600)document.querySelector('.quest-card')?.scrollIntoView({block:'start',behavior:'smooth'})}else{state.wrong++;setFeedback('ちがいます。計算・表し方・整数の条件のどれが問題かを考えよう。','bad')}})));host.append(list);host.append(feedback('誤りの理由を1つ選んでください。'));return}
+host.append(findSuccessNotice('repair',d.wrong+1));host.append(make('h3','prompt','正しい1行に直そう！'));host.append(makeMath('div','proof-line revealed',`修正する行（${d.wrong+1}行目）　${d.lines[d.wrong]}`));const choices=ordered([{txt:d.fix,correct:true},{txt:d.lines[d.wrong],correct:false},...FIX_DISTRACTORS[d.id].map(txt=>({txt,correct:false}))],191);const list=make('div','choices');choices.forEach((o,i)=>list.append(choiceButton(o.txt,i,()=>{if(o.correct){markFind()}else{state.wrong++;setFeedback(state.wrong%3===2?'考え方：'+d.reason:'その直し方では、まだ数学的に正しくありません。','bad')}})));host.append(list);host.append(feedback('修正後の文を選んでください。'));host.append(make('p','small muted','入力は必要ありません。修復できると次の問題に進めます。'))}
 
 function diagramFor(id,isTransfer){if(!id.startsWith('a')||Number(id.slice(1))<9)return null;const wrap=make('div');wrap.append(make('p','chart-title','図の規則を読もう'));const chart=make('div','pattern');let note='';const mkTable=(rows,cols,value,highlight,headers)=>{const table=document.createElement('table');const body=document.createElement('tbody');if(headers){const tr=document.createElement('tr');tr.append(make('th','',''));for(let c=0;c<cols;c++)tr.append(make('th','',String(2*c+1)));body.append(tr)}for(let r=0;r<rows;r++){const tr=document.createElement('tr');if(headers)tr.append(make('th','',String(2*(r+1))));for(let c=0;c<cols;c++){let v=value(r,c);const td=make('td',highlight(r,c)?'hit':(v==null?'dim':''),v==null?'':String(v));tr.append(td)}body.append(tr)}table.append(body);return table};
  if(id==='a09'){chart.append(mkTable(4,6,(r,c)=>2*(6*r+c)+1,(r,c)=>(r===1||r===2)&&(c===1||c===2)));note='横に2、縦に12増える。色の4マスは例。'}
