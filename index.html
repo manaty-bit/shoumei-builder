@@ -17,8 +17,73 @@
 
 .preview-warning{border:1px solid #f5cf91;background:#fff9eb;border-radius:14px;padding:16px;color:#534326;line-height:1.65}
 .preview-warning strong{font-size:1.08rem;display:block;margin-bottom:6px}.preview-warning p{margin:8px 0}.preview-warning a{color:#234fbd;font-weight:800;text-decoration:underline;text-underline-offset:3px}.preview-note{font-size:.88rem;color:#667992;line-height:1.65}
-</style></head><body><div id="app">
-<header class="top"><div class="top-inner"><div class="identity"><div class="logo" aria-hidden="true">✦</div><div><h1>証明ビルダー <span class="mini-en">PROOF QUEST</span></h1><p class="tagline">ひらめきをつなげて、証明を完成させよう！</p></div></div><div class="top-aux"><span class="vtag">⌨ 数字キー 1〜4 でも回答OK</span><button class="topbtn" id="recordBtn">🏅 学習記録</button></div></div></header>
+
+/* Home + stage map (desktop first, mobile friendly) */
+#app.home-mode{min-height:100dvh;height:100dvh;overflow:hidden}
+#app.home-mode .controls,#app.home-mode .container{display:none}
+.home-screen{display:none;flex:1;min-height:0;padding:20px 22px 24px;overflow-y:auto}
+#app.home-mode .home-screen{display:flex}
+.home-shell{width:min(1110px,100%);margin:0 auto;display:flex;flex-direction:column;gap:15px}
+.home-hero{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;border-radius:23px;padding:22px 29px;overflow:hidden;background:linear-gradient(115deg,#233d8a,#596de5 78%,#8e90e5);color:white;box-shadow:0 14px 32px #344da52b}
+.home-hero:after{content:'✧ ✦ ✧';position:absolute;right:120px;top:8px;color:#ffffff39;font-size:32px;letter-spacing:10px}
+.home-eyebrow{font-size:11px;font-weight:900;letter-spacing:.16em;color:#d8e8ff}
+.home-hero h2{font-size:clamp(23px,2.5vw,33px);margin:7px 0 7px;line-height:1.35}
+.home-hero p{color:#e8efff;font-size:13px;font-weight:700;margin:0;line-height:1.7}
+.home-hero-symbol{font-size:83px;font-family:Georgia,serif;line-height:1;opacity:.84;transform:rotate(-8deg);flex-shrink:0;text-shadow:0 6px 0 #263b9140}
+.home-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.home-action{border:2px solid #cdd8ff;min-height:92px;background:#fff;border-radius:20px;padding:18px 20px;display:flex;align-items:center;gap:15px;text-align:left;box-shadow:0 4px 0 #dce4f5;color:#233e75;transition:transform .15s,border .15s}
+.home-action:hover:not(:disabled){border-color:#7c90e9;transform:translateY(-2px);background:#f8faff}
+.home-action.continue{border-color:#a8dfcf;box-shadow:0 4px 0 #d6eee7}
+.home-action.continue:hover:not(:disabled){border-color:#16a786;background:#f5fffb}
+.home-action:disabled{opacity:.55;cursor:not-allowed}
+.home-action-icon{font-size:22px;display:grid;place-items:center;width:47px;height:47px;flex-shrink:0;border-radius:15px;background:#eaf0ff;color:#4761d1}
+.home-action.continue .home-action-icon{background:#e5faf2;color:#0d9b77}
+.home-action-text{display:flex;flex-direction:column;gap:5px;min-width:0}
+.home-action-text strong{font-size:19px;font-weight:900}
+.home-action-text small{font-size:11px;font-weight:750;color:#7184a2;line-height:1.5}
+.home-save-note{margin:-3px 0 0;color:#6c7f9d;font-size:11px;font-weight:750}
+.home-stage-panel{border:1px solid #dfe6f3;background:white;border-radius:20px;padding:17px 20px 20px;box-shadow:0 7px 20px #45618c12}
+.home-filters{display:flex;flex-wrap:wrap;gap:15px;align-items:end;margin-bottom:16px}
+.home-filter{display:flex;flex-direction:column;gap:6px}
+.home-filter-label{font-size:11px;color:#7887a0;font-weight:900}
+.home-filter-buttons{display:flex;gap:4px;background:#f1f4fb;border-radius:11px;padding:4px}
+.filter-chip{border:0;border-radius:8px;padding:7px 11px;min-height:33px;background:transparent;color:#506587;font-weight:850;font-size:12px;white-space:nowrap}
+.filter-chip.selected{background:#5669e8;color:white;box-shadow:0 2px 5px #4258b52b}
+.filter-chip:hover:not(.selected){background:#e1e8f8}
+.stage-section-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;color:#3b4b7b}
+.stage-section-title strong{font-size:17px}
+.stage-section-title span{font-size:12px;color:#67809e;font-weight:850}
+.stage-select-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.stage-select-card{display:flex;align-items:center;gap:10px;background:#f8faff;border:1px solid #dce4f2;border-radius:12px;padding:11px 10px;text-align:left;min-height:69px;color:#2c4266;transition:.15s}
+.stage-select-card:hover{background:#edf1ff;border-color:#879dec;transform:translateY(-1px)}
+.stage-select-card.cleared{background:#f0fbf6;border-color:#ace2cc}
+.stage-select-number{display:grid;place-items:center;border-radius:9px;min-width:34px;height:34px;background:#e9eeff;color:#5068c9;font-size:12px;font-weight:950;flex-shrink:0}
+.stage-select-card.cleared .stage-select-number{color:#fff;background:#15a785}
+.stage-select-detail{display:flex;flex-direction:column;gap:4px;min-width:0}
+.stage-select-detail strong{font-size:12px;line-height:1.35;overflow-wrap:anywhere}
+.stage-select-detail small{font-size:10px;color:#7b8ba3;font-weight:750}
+.stage-dialog{width:min(980px,100%);padding:22px;max-height:90dvh}
+.stage-dialog-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}
+.stage-dialog-head h2{margin:0;font-size:22px}
+@media(max-width:900px){.stage-select-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){
+ #app.home-mode{height:100dvh;min-height:100dvh;overflow:hidden}
+ .top-inner{flex-wrap:wrap;row-gap:6px}.top-aux{gap:6px;margin-left:auto}
+ .home-screen{padding:12px 10px 20px}.home-shell{gap:11px}
+ .home-hero{padding:17px 16px;border-radius:17px}.home-hero h2{font-size:22px}.home-hero p{font-size:11px}.home-hero-symbol{font-size:48px}
+ .home-actions{grid-template-columns:1fr;gap:9px}
+ .home-action{min-height:70px;padding:11px 14px;border-radius:15px}.home-action-text strong{font-size:16px}.home-action-icon{height:39px;width:39px}
+ .home-save-note{font-size:10px}
+ .home-stage-panel{padding:13px 11px 17px;border-radius:16px}
+ .home-filters{gap:10px}.filter-chip{font-size:11px;padding:7px 8px}
+ .stage-select-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .stage-select-card{min-height:62px;padding:9px 7px;gap:7px}
+ .stage-select-number{min-width:28px;height:28px}.stage-select-detail strong{font-size:11px}
+ .stage-dialog{padding:15px}.stage-dialog-head h2{font-size:17px}
+}
+</style></head><body><div id="app" class="home-mode">
+<header class="top"><div class="top-inner"><div class="identity"><div class="logo" aria-hidden="true">✦</div><div><h1>証明ビルダー <span class="mini-en">PROOF QUEST</span></h1><p class="tagline">ひらめきをつなげて、証明を完成させよう！</p></div></div><div class="top-aux"><span class="vtag">⌨ 数字キー 1〜4 でも回答OK</span><button class="topbtn" id="homeBtn">⌂ ホーム</button><button class="topbtn" id="recordBtn">🏅 学習記録</button></div></div></header>
+<section id="homeScreen" class="home-screen" aria-label="証明ビルダー ホーム画面"></section>
 <div class="controls"><div class="controls-inner"><div class="sets"><div class="seg" role="group" aria-label="モード"><button id="buildTab" aria-pressed="true">🧩 証明をつくる</button><button id="findTab" aria-pressed="false">🔍 間違いを見抜く</button></div><div class="seg level" role="group" aria-label="難易度"><button id="basicTab">🌱 基礎</button><button id="advancedTab">🚀 発展</button></div></div><span class="smallstats" id="stats"></span></div></div>
 <main class="container"><nav id="stagebar" class="stagebar" aria-label="証明の練習段階"></nav><div class="workspace"><section class="card problem-card"><div class="card-body" id="problem"><div class="preview-warning"><strong>⚠ この画面では問題を読み込めていません</strong><p>HTMLのプレビュー機能では、ゲームに必要なJavaScriptが実行されないことがあります。アプリ本体は通常のブラウザで利用してください。</p><a href="https://manaty-bit.github.io/shoumei-builder/" target="_blank" rel="noopener noreferrer">Safari・Chromeでアプリを開く</a><p class="preview-note">公開ページが開かない場合は、GitHubの <a href="https://github.com/manaty-bit/shoumei-builder/settings/pages" target="_blank" rel="noopener noreferrer">Settings → Pages</a> で main / (root) を公開する設定が必要です。</p></div></div></section><section class="card quest-card"><div class="work-head"><div><h2 id="workTitle">ブラウザで起動してください</h2><p id="workDesc">選択肢を表示するため、JavaScriptの実行が必要です。</p></div><span class="count" id="workCount"></span></div><div class="quest-meter" aria-hidden="true"><span id="questMeterBar"></span></div><div class="work-body" id="work"><p class="preview-note">正常に起動すると、ここに4択問題と証明ノートが表示されます。ChatGPT内のプレビューで空白になる場合は、上の案内に従って通常のブラウザから開いてください。</p></div></section></div></main><footer class="footer">文字の置き方・式変形・証明の順序を、すべてボタンで学べます。記録はこの端末内に保存されます。</footer>
 </div><div id="modalRoot"></div>
@@ -326,6 +391,124 @@ function empty(){return{build:{basic:{},advanced:{}},find:{basic:{},advanced:{}}
 function load(){try{const p=JSON.parse(localStorage.getItem(STORE));if(p?.build?.basic&&p?.build?.advanced&&p?.find?.basic&&p?.find?.advanced)return p}catch(e){}return empty()}
 let progress=load();function save(){try{localStorage.setItem(STORE,JSON.stringify(progress))}catch(e){}}
 const state={mode:'build',level:'basic',phase:1,index:0,step:0,wrong:0,hints:0,feedback:'',tone:'',showList:false,showGuide:false,showHint:false,errorStep:'point',retry:0,practice:false};
+const SESSION_STORE='shoumei-builder-v6-last-stage';
+let isPlaying=false;
+const stageChoice={mode:'build',level:'basic',phase:1};
+function saveSession(){
+ if(!isPlaying)return;
+ const {mode,level,phase,index,step,wrong,hints,errorStep,retry,practice}=state;
+ try{localStorage.setItem(SESSION_STORE,JSON.stringify({mode,level,phase,index,step,wrong,hints,errorStep,retry,practice,date:Date.now()}))}catch(e){}
+}
+function loadSession(){
+ try{
+  const d=JSON.parse(localStorage.getItem(SESSION_STORE));
+  if(!d||!['build','find'].includes(d.mode)||!LEVELS.includes(d.level))return null;
+  const items=d.mode==='build'?PROOFS[d.level]:ERRORS[d.level];
+  if(!Number.isInteger(d.index)||d.index<0||d.index>=items.length)return null;
+  const phase=d.mode==='find'?1:d.phase===2?2:1;
+  const maxStep=d.mode==='build'?items[d.index].steps.length:0;
+  const step=d.mode==='build'&&Number.isInteger(d.step)?Math.max(0,Math.min(maxStep,d.step)):0;
+  return {mode:d.mode,level:d.level,phase,index:d.index,step,wrong:Number.isInteger(d.wrong)?Math.max(0,d.wrong):0,hints:Number.isInteger(d.hints)?Math.max(0,d.hints):0,errorStep:['point','reason','repair'].includes(d.errorStep)?d.errorStep:'point',retry:Number.isInteger(d.retry)?d.retry:0,practice:!!d.practice};
+ }catch(e){return null}
+}
+function anyRecord(){return LEVELS.some(level=>Object.keys(progress.build[level]).length||Object.keys(progress.find[level]).length)}
+function resumeTarget(){
+ const saved=loadSession();if(saved)return saved;
+ if(!anyRecord())return null;
+ for(const level of LEVELS){const i=PROOFS[level].findIndex(d=>!progress.build[level][d.id]?.guided);if(i>=0)return {mode:'build',level,index:i,phase:1,step:0,wrong:0,hints:0,errorStep:'point',retry:0,practice:false}}
+ for(const level of LEVELS){const i=ERRORS[level].findIndex(d=>!progress.find[level][d.id]?.date);if(i>=0)return {mode:'find',level,index:i,phase:1,step:0,wrong:0,hints:0,errorStep:'point',retry:0,practice:false}}
+ return {mode:'build',level:'basic',index:0,phase:1,step:0,wrong:0,hints:0,errorStep:'point',retry:0,practice:true}
+}
+function enterGame(){isPlaying=true;$('app').classList.remove('home-mode');render();window.scrollTo(0,0)}
+function startAt(mode,level,index,phase=1){
+ const items=mode==='build'?PROOFS[level]:ERRORS[level];
+ const item=items[index];if(!item)return;
+ const alreadyDone=mode==='build'?!!progress.build[level][item.id]?.[phase===2?'order':'guided']:!!progress.find[level][item.id]?.date;
+ Object.assign(state,{mode,level,index,phase:mode==='find'?1:phase,step:0,wrong:0,hints:0,feedback:'',tone:'',showList:false,showGuide:false,showHint:false,errorStep:'point',retry:state.retry+1,practice:alreadyDone});
+ $('modalRoot').replaceChildren();enterGame();
+}
+function continueGame(){
+ const d=resumeTarget();if(!d)return;
+ Object.assign(state,{mode:d.mode,level:d.level,index:d.index,phase:d.phase,step:d.step,wrong:d.wrong,hints:d.hints,errorStep:d.errorStep,retry:d.retry,practice:d.practice,feedback:'',tone:'',showList:false,showGuide:false,showHint:false});
+ enterGame();
+}
+function showHome(){
+ if(isPlaying)saveSession();
+ isPlaying=false;$('app').classList.add('home-mode');
+ $('modalRoot').replaceChildren();
+ renderHome();window.scrollTo(0,0);
+}
+function progressFor(mode,level,item,phase){
+ return mode==='find'?!!progress.find[level][item.id]?.date:!!progress.build[level][item.id]?.[phase===2?'order':'guided'];
+}
+function stageSelection(host,refresh){
+ const filter=make('div','home-filters');
+ function addFilter(title,key,values){
+  const part=make('div','home-filter');
+  part.append(make('span','home-filter-label',title));
+  const line=make('div','home-filter-buttons');
+  values.forEach(([value,label])=>{const b=btn(label,'filter-chip'+(stageChoice[key]===value?' selected':''),()=>{stageChoice[key]=value;if(key==='mode')stageChoice.phase=1;refresh()});b.setAttribute('aria-pressed',String(stageChoice[key]===value));line.append(b)});
+  part.append(line);filter.append(part);
+ }
+ addFilter('練習モード','mode',[['build','🧩 証明をつくる'],['find','🔍 間違いを見抜く']]);
+ addFilter('レベル','level',[['basic','🌱 基礎'],['advanced','🚀 発展']]);
+ if(stageChoice.mode==='build')addFilter('チャレンジ','phase',[[1,'証明のパーツ'],[2,'ならべかえ']]);
+ host.append(filter);
+ const items=stageChoice.mode==='build'?PROOFS[stageChoice.level]:ERRORS[stageChoice.level];
+ const completedCount=items.filter(d=>progressFor(stageChoice.mode,stageChoice.level,d,stageChoice.phase)).length;
+ const title=make('div','stage-section-title');
+ title.append(make('strong','',`ステージを選ぼう`),make('span','',`クリア ${completedCount} / ${items.length}`));host.append(title);
+ const grid=make('div','stage-select-grid');
+ items.forEach((d,i)=>{
+  const done=progressFor(stageChoice.mode,stageChoice.level,d,stageChoice.phase);
+  const b=btn('','stage-select-card'+(done?' cleared':''),()=>startAt(stageChoice.mode,stageChoice.level,i,stageChoice.phase));
+  b.append(make('span','stage-select-number',done?'✓':String(i+1).padStart(2,'0')));
+  const detail=make('span','stage-select-detail');
+  detail.append(make('strong','',d.title),make('small','',done?'クリア済み・もう一度挑戦':'選んでスタート'));
+  b.append(detail);
+  grid.append(b);
+ });
+ host.append(grid);
+}
+function renderHome(){
+ const home=$('homeScreen');home.replaceChildren();
+ const shell=make('div','home-shell');
+ const hero=make('div','home-hero');
+ const heroText=make('div','home-hero-copy');
+ heroText.append(make('span','home-eyebrow','PROOF QUEST  ·  数学の証明を攻略'));
+ heroText.append(make('h2','','ひらめきを、証明に変えよう。'));
+ heroText.append(make('p','','文字の置き方・式の計算・理由・結論を、4択で身につけよう。'));
+ hero.append(heroText,make('div','home-hero-symbol','∴'));
+ shell.append(hero);
+ const resume=resumeTarget();
+ const actions=make('div','home-actions');
+ const restart=btn('','home-action restart',()=>startAt('build','basic',0,1));
+ restart.append(make('span','home-action-icon','▶'),make('span','home-action-text'));
+ restart.querySelector('.home-action-text').append(make('strong','','はじめから'),make('small','','基礎・証明をつくる の第1問へ'));
+ const continued=btn('','home-action continue',continueGame);
+ continued.disabled=!resume;
+ continued.append(make('span','home-action-icon','↪'),make('span','home-action-text'));
+ continued.querySelector('.home-action-text').append(make('strong','','つづきから'),make('small','',resume?`${resume.level==='basic'?'基礎':'発展'}・${resume.mode==='build'?'証明をつくる':'間違いを見抜く'}・第${resume.index+1}問${resume.mode==='build'&&resume.phase===2?'（ならべかえ）':''}`:'まだ続きの記録はありません'));
+ actions.append(restart,continued);shell.append(actions);
+ const progressSummary=make('p','home-save-note','🏅 クリア記録は保存されます。「はじめから」を選んでも消えません。');
+ shell.append(progressSummary);
+ const chooser=make('div','home-stage-panel');
+ stageSelection(chooser,renderHome);
+ shell.append(chooser);home.append(shell);
+}
+function renderStageDialog(){
+ const root=$('modalRoot');root.replaceChildren();
+ const overlay=make('div','overlay'),dialog=make('div','dialog stage-dialog');
+ dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');dialog.setAttribute('aria-label','ステージ選択');
+ const header=make('div','stage-dialog-head');
+ header.append(make('h2','','🗂 ステージ選択'),btn('閉じる ×','subbtn',()=>root.replaceChildren()));
+ dialog.append(header);
+ stageSelection(dialog,renderStageDialog);
+ overlay.append(dialog);overlay.addEventListener('click',e=>{if(e.target===overlay)root.replaceChildren()});
+ root.append(overlay);
+}
+function openStages(){stageChoice.mode=state.mode;stageChoice.level=state.level;stageChoice.phase=state.phase;renderStageDialog()}
+
 const dataset=()=>state.mode==='build'?PROOFS[state.level]:ERRORS[state.level];
 const cur=()=>dataset()[state.index];
 const bk=(id=cur().id,lvl=state.level)=>progress.build[lvl][id]||{};
@@ -345,7 +528,7 @@ function completeRate(level){return {build:PROOFS[level].filter(x=>progress.buil
 function renderHeader(){for(const [id,on] of [['buildTab',state.mode==='build'],['findTab',state.mode==='find'],['basicTab',state.level==='basic'],['advancedTab',state.level==='advanced']]){$(id).classList.toggle('active',on);$(id).setAttribute('aria-pressed',String(on))}const s=completeRate(state.level);$('stats').textContent=`証明 ${s.build}/${s.buildTotal} ｜ 順番チャレンジ ${s.order}/${s.buildTotal} ｜ 誤り探し ${s.find}/${s.findTotal}`}
 function stagebar(){const h=$('stagebar');h.replaceChildren();if(state.mode==='find'){['① 誤りの行','② 理由を選ぶ','③ 正しく直す'].forEach((label,i)=>{const index=['point','reason','repair','done'].indexOf(state.errorStep);const x=make('div','stage'+(index===i?' active':'')+(index>i?' done':''));x.append(make('span','stage-n',String(i+1)),make('div','',label));h.append(x)});return}PHASES.forEach((p,i)=>{const j=i+1,done=!!bk()[j===1?'guided':'order'];const b=btn('','stage'+(j===state.phase?' active':'')+(done?' done':''),()=>advance(state.mode,state.level,state.index,j));b.append(make('span','stage-n',done?'✓':String(j)));const label=make('div');label.append(make('strong','',p.label),make('small','',p.sub));b.append(label);h.append(b)})}
 function renderProblem(){const d=cur(),host=$('problem');host.replaceChildren();host.append(make('p','sectiontitle',`${state.mode==='build'?'証明をつくる':'間違いを見抜く'} / ${state.level==='basic'?'🌱 基礎':'🚀 発展'} / ${state.index+1}問目`));host.append(make('h2','title',d.title));host.append(make('div','statement',d.statement));const diagram=diagramFor(d.id,false);if(diagram)host.append(diagram);
-const nav=make('div','nav'),group=make('div','nav-group');group.append(btn('← 前の問題','subbtn',()=>gotoQ(state.index-1)),btn('次の問題 →','subbtn',nextQ));nav.append(group,btn(state.showList?'一覧を閉じる':'問題一覧','subbtn',()=>{state.showList=!state.showList;renderProblem()}));host.append(nav);
+const nav=make('div','nav'),group=make('div','nav-group');group.append(btn('← 前の問題','subbtn',()=>gotoQ(state.index-1)),btn('次の問題 →','subbtn',nextQ));nav.append(group,btn('🗂 ステージ選択','subbtn',openStages));host.append(nav);
 if(state.showList){const list=make('div','problem-list');dataset().forEach((x,i)=>{const done=state.mode==='build'?!!progress.build[state.level][x.id]?.guided:!!progress.find[state.level][x.id]?.date;const b=btn((done?'✓ ':'')+String(i+1).padStart(2,'0'),'qnum'+(i===state.index?' active':'')+(done?' complete':''),()=>gotoQ(i));b.title=x.title;list.append(b)});host.append(list)}
 if(state.mode==='build'){const guide=make('div','guide'),details=make('details');details.open=state.showGuide;details.addEventListener('toggle',()=>state.showGuide=details.open);details.append(make('summary','','基本の文字式を確認する'));details.append(make('p','','偶数：2n、奇数：2n＋1（n は整数）。正の奇数：2n－1（n は正の整数）。2けた：10a＋b（a は1～9、b は0～9の整数）。3けた：100a＋10b＋c（a は1～9、b・c は0～9の整数）。数字の入れ替え後に先頭が0になる場合も、数として扱います。'));guide.append(details);host.append(guide)}else host.append(make('div','hint','計算ミスだけでなく、文字の条件や「なぜ整数と言えるか」に着目しよう。最後の修正もボタンで選べます。'));
 if(!diagram){const info=make('div','buddy-card');info.append(make('span','buddy-face',state.mode==='build'?'🤖':'🕵️'));const note=make('div','buddy-text');note.append(make('b','','ナビからのひとこと'));let msg='';if(state.mode==='build'){msg=state.step===0?'まずは、文字の置き方と条件をチェック！':state.step<3?'式の計算は正しいかな？ つながりを考えよう。':'最後は「整数だから」という理由が大切だよ。'}else{msg=state.errorStep==='point'?'証明を1行ずつ読むと、隠れた誤りが見えてくるよ。':state.errorStep==='reason'?'どこで論理がくずれたか、理由を考えてみよう。':'正しい一文を選んで、証明を復活させよう！'}note.append(make('p','',msg));info.append(note);host.insertBefore(info,nav)}}
@@ -393,12 +576,12 @@ function diagramFor(id,isTransfer){if(!id.startsWith('a')||Number(id.slice(1))<9
  wrap.append(chart,make('p','diagram-note',note));return wrap}
 
 function renderMeter(){const d=cur();const total=state.mode==='build'?d.steps.length:3;const done=completed()?total:state.mode==='build'?state.step:['point','reason','repair','done'].indexOf(state.errorStep);$('questMeterBar').style.width=(100*Math.min(1,Math.max(0,done)/total))+'%'}
-function render(){renderHeader();stagebar();renderProblem();renderWork();renderMeter()}
+function render(){if(!isPlaying)return;renderHeader();stagebar();renderProblem();renderWork();renderMeter();saveSession()}
 function openRecords(){const host=$('modalRoot');host.replaceChildren();const cover=make('div','overlay'),dlg=make('div','dialog');dlg.setAttribute('role','dialog');dlg.setAttribute('aria-modal','true');dlg.setAttribute('aria-label','学習記録');dlg.append(make('h2','','証明ビルダー 学習記録'));dlg.append(make('p','','選択式の学習記録です。「白紙から証明を書けること」の合格判定ではありません。'));LEVELS.forEach(lvl=>{const s=completeRate(lvl);dlg.append(make('h3','',lvl==='basic'?'🌱 基礎':'🚀 発展'));const grid=make('div','kpi-grid');for(const [title,count,total] of [['証明をつくる',s.build,s.buildTotal],['順番チャレンジ',s.order,s.buildTotal],['間違いを修復',s.find,s.findTotal]]){const k=make('div','kpi');k.append(make('b','',`${count}/${total}`),make('span','',title));const line=make('div','progressline'),bar=make('span');bar.style.width=(100*count/total)+'%';line.append(bar);k.append(line);grid.append(k)}dlg.append(grid);if(s.build===s.buildTotal&&s.find===s.findTotal){dlg.append(make('p','hint','このレベルの基本の証明づくりと誤り修復を全問クリア！ 慣れてきたら、順番チャレンジにも挑戦してみよう。'))}});
 const actions=make('div','actionrow');actions.append(btn('閉じる','primary',()=>host.replaceChildren()));dlg.append(actions);cover.append(dlg);cover.addEventListener('click',e=>{if(e.target===cover)host.replaceChildren()});host.append(cover)}
 function validate(){for(const lvl of LEVELS){for(const d of PROOFS[lvl]){if(!d.steps?.length)throw Error('No proof: '+d.id);for(const s of d.steps){const arr=[s.correct,...s.wrong];if(arr.length!==4||new Set(arr).size!==4)throw Error('Invalid choices: '+d.id)}}for(const d of ERRORS[lvl]){if(d.wrong<0||d.wrong>=d.lines.length||!FIND_REASON[d.id])throw Error('Invalid error: '+d.id);const arr=[d.fix,d.lines[d.wrong],...(FIX_DISTRACTORS[d.id]||[])];if(arr.length!==4||new Set(arr).size!==4)throw Error('Invalid repair choices: '+d.id)}}}
-$('buildTab').addEventListener('click',()=>advance('build',state.level,0,1));$('findTab').addEventListener('click',()=>advance('find',state.level,0,1));$('basicTab').addEventListener('click',()=>advance(state.mode,'basic',0,1));$('advancedTab').addEventListener('click',()=>advance(state.mode,'advanced',0,1));$('recordBtn').addEventListener('click',openRecords);
-document.addEventListener('keydown',e=>{if(e.altKey||e.ctrlKey||e.metaKey||document.querySelector('.overlay'))return;const el=document.activeElement;if(el&&['INPUT','TEXTAREA','SELECT'].includes(el.tagName))return;if(e.repeat)return;const n=Number(e.key);if(!Number.isInteger(n)||n<1||n>9)return;const options=[...document.querySelectorAll('#work .choices .choice')];if(options.length){if(n<=options.length){e.preventDefault();options[n-1].click()}return}const errors=[...document.querySelectorAll('#work .proof-line.clickable')];if(n<=errors.length){e.preventDefault();errors[n-1].click()}});
-validate();render();
+$('homeBtn').addEventListener('click',showHome);$('buildTab').addEventListener('click',()=>advance('build',state.level,0,1));$('findTab').addEventListener('click',()=>advance('find',state.level,0,1));$('basicTab').addEventListener('click',()=>advance(state.mode,'basic',0,1));$('advancedTab').addEventListener('click',()=>advance(state.mode,'advanced',0,1));$('recordBtn').addEventListener('click',openRecords);
+document.addEventListener('keydown',e=>{if(!isPlaying||e.altKey||e.ctrlKey||e.metaKey||document.querySelector('.overlay'))return;const el=document.activeElement;if(el&&['INPUT','TEXTAREA','SELECT'].includes(el.tagName))return;if(e.repeat)return;const n=Number(e.key);if(!Number.isInteger(n)||n<1||n>9)return;const options=[...document.querySelectorAll('#work .choices .choice')];if(options.length){if(n<=options.length){e.preventDefault();options[n-1].click()}return}const errors=[...document.querySelectorAll('#work .proof-line.clickable')];if(n<=errors.length){e.preventDefault();errors[n-1].click()}});
+validate();renderHome();
 
 </script></body></html>
